@@ -6,6 +6,7 @@
 package sample.utils;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -59,12 +60,22 @@ public class XMLUtils implements Serializable{
         }
         return result;
     }
+    
+    public static Document parseDOMFromString(String s) 
+            throws ParserConfigurationException, SAXException, IOException{
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        InputStream is = new ByteArrayInputStream(s.getBytes());
+        Document doc = builder.parse(is);
+        
+        return doc;
+    }
         
     public static Document parseDOMFromFile(String xmlFilePath) 
             throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        System.out.println("xml path:"+xmlFilePath);
+//        System.out.println("xml path:"+xmlFilePath);
         Document doc = builder.parse(xmlFilePath);
         
         return doc;

@@ -143,82 +143,6 @@ public class HTMLPreprocessor implements Serializable {
         return result;
     }
 
-    // <img> ---> <img />
-    private static String addMissingTags_Old(String raw) {
-        Stack<String> stackTagName = new Stack<>();
-        Stack<Integer> stackPos = new Stack<>();
-        List<Integer> unclosedTagPos = new ArrayList<>(); // position of > of that tag
-
-        // Step 1: Find unclosed tags
-        int i = 0;
-        while (i < raw.length()) {
-            if (raw.charAt(i) == '<') {// element detected
-                int tagPos = i;
-                // get Element name
-                i++;
-                String tagName = "";
-                // get tagName
-                while (i < raw.length() && raw.charAt(i) != ' ' && raw.charAt(i) != '>') {
-                    tagName += raw.charAt(i);
-                    i++;
-                }
-                i++;
-                // process Element
-                if (Character.isLetter(tagName.charAt(0))) { // is Start Element                
-                    stackTagName.push(tagName);
-                    stackPos.push(new Integer(tagPos));
-                } else if (tagName.startsWith("/")) { // is End Element
-
-                    tagName = tagName.substring(1);
-                    while (stackTagName.isEmpty() == false && stackTagName.peek().equals(tagName) == false) {
-                        int pos = stackPos.pop();
-                        String tag = stackTagName.pop();
-                        unclosedTagPos.add(new Integer(pos));
-                    }
-                    if (stackTagName.isEmpty() == false) {
-                        stackPos.pop();
-                        stackTagName.pop();
-                    }
-                }
-            } else {
-                i++;
-            }// end if charAt(i) == '<'
-        } // end while i
-        while (stackTagName.isEmpty() == false) {
-            int pos = stackPos.pop();
-            stackTagName.pop();
-            unclosedTagPos.add(new Integer(pos));
-        }
-
-        unclosedTagPos.sort((o1, o2) -> {
-            return (Integer) o1 - (Integer) o2; //To change body of generated lambdas, choose Tools | Templates.
-        });
-//        for (int j = 0; j < unclosedTagPos.size(); j++) {
-//            int p = unclosedTagPos.get(j);
-//            System.out.println("unclo: " + p + " - " + raw.substring(p,p+40));
-//        }
-
-        // Step 2: Add "/>" 
-        String result = "";
-        boolean found = false;
-        int iPos = 0;
-        for (i = 0; i < raw.length(); i++) {
-            if (iPos < unclosedTagPos.size() && unclosedTagPos.get(iPos).equals(new Integer(i))) {
-                iPos++;
-                found = true;
-            }
-            if (found && raw.charAt(i) == '>') {
-                if (raw.charAt(i - 1) != '/') {
-                    result += '/';
-                }
-                found = false;
-            }
-            result += raw.charAt(i);
-        }
-
-        return result;
-    }
-
     // <img> --> <img/>     
     // <html><body></html> --> <html><body></body></html>
     // <html></body></html> --> <html></html>
@@ -379,10 +303,6 @@ public class HTMLPreprocessor implements Serializable {
             }
         }
         return result;
-    }
-
-    private static String removeComments(String raw) {
-        return null;
     }
 
 }
