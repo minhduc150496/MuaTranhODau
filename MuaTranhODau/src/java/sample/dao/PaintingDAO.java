@@ -38,12 +38,12 @@ public class PaintingDAO implements Serializable {
                 String pageURL = rs.getString("pageURL");
                 String sPrice = rs.getString("price");
                 BigInteger price = new BigInteger(sPrice);
-                String imageURL = ""; // rs.getString("imageURL");
-                String description = rs.getString("description");
+                String imageURL = rs.getString("imageURL");
+                String keywords = rs.getString("keywords");
                 if (results==null) {
                     results = new Paintings();
                 }
-                Painting p = new Painting(name, code, pageURL, price, imageURL, description);
+                Painting p = new Painting(name, code, pageURL, price, imageURL, keywords);
                 results.getPainting().add(p);
             }
         } finally {
@@ -57,13 +57,13 @@ public class PaintingDAO implements Serializable {
         return results;
     }
 
-    public boolean insert(String name, String code, String pageURL, BigInteger price, String description)
+    public boolean insert(String name, String code, String pageURL, BigInteger price, String imageURL, String keywords)
             throws SQLException, NamingException, ClassNotFoundException {
         Connection con = null;
         PreparedStatement stm = null;
         try {
             con = DBUtils.getConnection();
-            String sql = "insert into Painting(name, code, pageURL, price, description) values (?,?,?,?,?)";
+            String sql = "insert into Painting(name, code, pageURL, price, imageURL, keywords) values (?,?,?,?,?,?)";
             stm = con.prepareStatement(sql);
             stm.setString(1, name);
             stm.setString(2, code);
@@ -73,7 +73,8 @@ public class PaintingDAO implements Serializable {
             } else {
                 stm.setInt(4, -1); // unknown
             }
-            stm.setString(5, description);
+            stm.setString(5, imageURL);
+            stm.setString(6, keywords);
             int rows = stm.executeUpdate();
             if (rows > 0) {
                 return true;

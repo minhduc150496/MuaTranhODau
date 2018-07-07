@@ -14,8 +14,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -42,13 +45,13 @@ public class HTMLPreprocessor implements Serializable {
                 result += line;
             }
         } finally {
-            if (br!=null) {
+            if (br != null) {
                 br.close();
             }
-            if (isr!=null) {
+            if (isr != null) {
                 isr.close();
             }
-            if (is!=null) {
+            if (is != null) {
                 is.close();
             }
         }
@@ -75,6 +78,9 @@ public class HTMLPreprocessor implements Serializable {
         result = addQuoteToAttrs(result);
 //        System.out.println("add quote to attrs done");
 
+        result = removeDuplicatedAttrKey(result);
+//        System.out.println("remove duplicated attr key");
+
         result = correctAmps(result);
 //        System.out.println("correct &amps; done");
 
@@ -82,16 +88,33 @@ public class HTMLPreprocessor implements Serializable {
         return result;
     }
 
+    private static String convertLinkedListToString(LinkedList<Character> linkedList) {
+        char[] arr = new char[linkedList.size()];
+        int i = 0;
+        for (Character ch : linkedList) {
+            arr[i] = ch;
+            i++;
+        }
+        String s = new String(arr);
+        return s;
+    }
+
+    private static void addToLinkedList(LinkedList<Character> linkedList, String s) {
+        for (int i = 0; i < s.length(); i++) {
+            linkedList.add(s.charAt(i));
+        }
+    }
+
     // <body ---> <body>
     private static String closeTags(String raw) {
         int i = 0;
         boolean foundTag = false;
-        String result = "";
+        LinkedList<Character> tmp = new LinkedList<>();
         while (i < raw.length()) {
             char ch = raw.charAt(i);
             if (ch == '<') {
                 if (foundTag) {
-                    result += ">";
+                    tmp.add('>');
                 } else {
                     foundTag = true;
                 }
@@ -99,14 +122,15 @@ public class HTMLPreprocessor implements Serializable {
             if (ch == '>') {
                 foundTag = false;
             }
-            result += ch;
+            tmp.add(ch);
             i++;
         }
+        String result = convertLinkedListToString(tmp);
         return result;
     }
 
     private static String removeShitTagsAndComments(String raw) {
-        String result = "";
+        LinkedList<Character> tmp = new LinkedList<>();
         boolean skip = false;
         boolean foundComment = false;
         int i = 0;
@@ -137,10 +161,12 @@ public class HTMLPreprocessor implements Serializable {
                 }
             }
             if (skip == false) {
-                result += raw.charAt(i);
+                tmp.add(raw.charAt(i));
             }
             i++;
         } // end while
+
+        String result = convertLinkedListToString(tmp);
         return result;
     }
 
@@ -163,18 +189,22 @@ public class HTMLPreprocessor implements Serializable {
         }
 
         // convert & to &amp;
-        String result = "";
+        LinkedList<Character> tmp = new LinkedList<>();
         int k = 0;
         for (int i = 0; i < raw.length(); i++) {
-            result += raw.charAt(i);
+            tmp.add(raw.charAt(i));
             if (k < incorrectPos.size()) {
                 int pos = incorrectPos.get(k);
                 if (i == pos) {
-                    result += "amp;";
+                    tmp.add('a');
+                    tmp.add('m');
+                    tmp.add('p');
+                    tmp.add(';');
                     k++;
                 }
             }
         }
+        String result = convertLinkedListToString(tmp);
         return result;
     }
 
@@ -184,7 +214,7 @@ public class HTMLPreprocessor implements Serializable {
     private static String addMissingTags(String raw) {
         Stack<String> stack = new Stack<>(); // stack of tag names
         Map<String, Integer> map = new HashMap<>(); // TagName - Number of occurance
-        String result = "";
+        LinkedList<Character> tmp = new LinkedList<>();
         int i = 0;
         while (i < raw.length()) {
             char ch = raw.charAt(i);
@@ -216,18 +246,14 @@ public class HTMLPreprocessor implements Serializable {
                 // PROCESS in each CASES
                 if (EMPTY_ELEMENTS.contains("<" + tagName + ">")) { // case 1: is Empty Tag
                     // đảm bảo có "/>"
-                    boolean foundSlash = false; // slash is /
                     while (i < raw.length() && raw.charAt(i) != '>') {
-                        if (raw.charAt(i) == '/') {
-                            foundSlash = true;
-                        }
-                        result += raw.charAt(i);
+                        tmp.add(raw.charAt(i));
                         i++;
                     }
-                    if (foundSlash == false) {
-                        result += '/';
+                    if (raw.charAt(i - 1) != '/') {
+                        tmp.add('/');
                     }
-                    result += raw.charAt(i);
+                    tmp.add(raw.charAt(i));
                     i++;
                 } else if (tagName.startsWith("/") == false) { // case 2: is Opening Tag                    
                     stack.push(tagName);
@@ -239,7 +265,7 @@ public class HTMLPreprocessor implements Serializable {
                         count++;
                         map.put(tagName, count);
                     }
-                    result += ch;
+                    tmp.add(ch);
                     i++;
                 } else { // case 3: is Ending Tag. </someTag>
                     tagName = tagName.substring(1);
@@ -247,18 +273,18 @@ public class HTMLPreprocessor implements Serializable {
                         // case 3.1: Ending Tag matches an Opening Tag
                         String t = stack.pop();
                         (new MyMethodUtils()).getOutOfMap(map, t);
-                        result += ch;
+                        tmp.add(ch);
                         i++;
                     } else if (stack.isEmpty() == false && map.get(tagName) != null) {
                         // case 3.2: mở mà chưa đóng --> đóng giùm
                         while (stack.isEmpty() == false && stack.peek().equals(tagName) == false) { // đóng giùm những thẻ chưa đóng, pop khỏi stack
                             String t = stack.pop();
                             (new MyMethodUtils()).getOutOfMap(map, t);
-                            result += "</" + t + ">";
+                            addToLinkedList(tmp, "</" + t + ">");
                         }
                         String t = stack.pop();
                         (new MyMethodUtils()).getOutOfMap(map, t);
-                        result += ch;
+                        tmp.add(ch);
                         i++;
                     } else {
                         // case 3.3: chưa mở mà đóng --> bỏ qua ending tag đó
@@ -270,10 +296,11 @@ public class HTMLPreprocessor implements Serializable {
                 // end: PROCESS in each CASES
             } // end if meet < 
             else {
-                result += ch;
+                tmp.add(ch);
                 i++;
             }
         }
+        String result = convertLinkedListToString(tmp);
         return result;
     }
 
@@ -282,10 +309,10 @@ public class HTMLPreprocessor implements Serializable {
         boolean foundStartElement = false;
         boolean foundQuote = false;
         char quoteMark = ' ';
-        String result = "";
+        LinkedList<Character> tmp = new LinkedList<>();
         for (int i = 0; i < raw.length(); i++) {
             char ch = raw.charAt(i);
-            result += ch;
+            tmp.add(ch);
             if (ch == '<') {
                 foundStartElement = true;
             } else if (foundStartElement && ch == '>') {
@@ -295,49 +322,101 @@ public class HTMLPreprocessor implements Serializable {
                 quoteMark = ch;
             } else if (foundQuote && ch == quoteMark) { // found UNQUOTE
                 if (i + 1 < raw.length() && raw.charAt(i + 1) != ' ') {
-                    result += " ";
+                    tmp.add(' ');
                 }
                 foundQuote = false;
             }
         }
+        String result = convertLinkedListToString(tmp);
         return result;
     }
 
     // <img src=a.jpg /> ---> <img src="a.jpg" />
     private static String addQuoteToAttrs(String raw) {
         boolean foundStartElement = false;
-        boolean foundAttrValue = false;
+        boolean inAttrValue = false;
         boolean rememberToUnquote = false;
-        String result = "";
+        LinkedList<Character> tmp = new LinkedList<>();
         for (int i = 0; i < raw.length(); i++) {
             char ch = raw.charAt(i);
             if (rememberToUnquote && ch == '\'') {
-                result += '"';
+                tmp.add('"');
                 rememberToUnquote = false;
-                foundAttrValue = false;
+                inAttrValue = false;
                 continue;
             } else if (rememberToUnquote && (ch == ' ' || ch == '/' || ch == '>')) {
-                result += '"';
+                tmp.add('"');
                 rememberToUnquote = false;
-                foundAttrValue = false;
+                inAttrValue = false;
             }
-            result += ch;
+            tmp.add(ch);
             if (ch == '<') {
                 foundStartElement = true;
             } else if (foundStartElement && ch == '>') {
                 foundStartElement = false;
-            } else if (foundStartElement && foundAttrValue == false && ch == '=') { // found an attribute value
+            } else if (foundStartElement && inAttrValue == false && ch == '=') { // found an attribute value
                 if (i + 1 < raw.length() && raw.charAt(i + 1) != '\"' && raw.charAt(i + 1) != '\'') {
                     System.out.println(i);
-                    result += '"';
+                    tmp.add('"');
                     rememberToUnquote = true;
                 }
-                foundAttrValue = true;
+                inAttrValue = true;
             } else if (rememberToUnquote && ch == '"') {
                 rememberToUnquote = false;
-                foundAttrValue = false;
+                inAttrValue = false;
             }
         }
+        String result = convertLinkedListToString(tmp);
+        return result;
+    }
+
+    // <img width="120" width="120" /> ---> <img width="120" />
+    private static String removeDuplicatedAttrKey(String raw) {
+        boolean inStartElement = false;
+        boolean inAttrValue = false;
+        char quoteMark = ' ';
+        LinkedList<Character> tmp = new LinkedList<>();
+        Set<String> keySet = null;
+        int i = 0;
+        while (i<raw.length()) {
+            char ch = raw.charAt(i);
+            if (inStartElement && inAttrValue == false && (ch == '"' || ch == '\'')) {
+                inAttrValue = true;
+                quoteMark = ch;
+            } else if (inAttrValue && ch == quoteMark) {
+                inAttrValue = false;
+            } else if (inStartElement && inAttrValue == false
+                    && Character.isLetter(ch) && raw.charAt(i - 1) == ' ') {
+                // found attr key
+                String attrKey = "";
+                int j = i;
+                while (j < raw.length() && raw.charAt(j)!='=') {
+                    attrKey += raw.charAt(j);
+                    j++;
+                }
+                if (keySet.contains(attrKey)) {
+                    // skip
+                    char quote = raw.charAt(j+1);
+                    i=j+2;
+                    while(i<raw.length()&& raw.charAt(i)!=quote) {
+                        i++;
+                    }
+                    i++;
+                    continue;
+                } else {
+                    keySet.add(attrKey);
+                }
+            } else if (ch == '<') {
+                inStartElement = true;
+                keySet = new HashSet<>();
+            } else if (ch == '>') {
+                inStartElement = false;
+                keySet = null;
+            }
+            tmp.add(ch);
+            i++;
+        }//end while
+        String result = convertLinkedListToString(tmp);
         return result;
     }
 

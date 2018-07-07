@@ -12,9 +12,10 @@ import java.util.logging.Logger;
 import javax.naming.NamingException;
 import sample.jaxb.Painting;
 import sample.dao.PaintingDAO;
-import sample.staxparser.TranhDepCom;
-import sample.domparser.TuongXinhComVN;
+import sample.domparser.TuongXinhComVn;
 import sample.domparser.MyParser;
+import sample.domparser.TranhTreoTuongVn;
+import sample.staxparser.TranhDepCom;
 
 /**
  *
@@ -28,10 +29,9 @@ public class ScrapServlet {
     }
 
     public void process() {
-        MyParser ws = new TranhDepCom();
+        MyParser ws = new TranhTreoTuongVn();
         ws.scrap();
         List<Painting> list = ws.getResults();
-//        System.out.println("list: "+list.size());
         
         PaintingDAO dao = new PaintingDAO();
 
@@ -40,10 +40,10 @@ public class ScrapServlet {
         if (list != null) {
             for (Painting p : list) {
                 try {
-                    dao.insert(p.getName(), p.getCode(), p.getPageURL(), p.getPrice(), p.getImageURL());
+                    dao.insert(p.getName(), p.getCode(), p.getPageURL(), p.getPrice(), p.getImageURL(), "keywords coming soon");
                     nSuccess++;
                 } catch (SQLException ex) {
-//                    Logger.getLogger(ScrapServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ScrapServlet.class.getName()).log(Level.SEVERE, null, ex);
                     nDuplicated++;
                 } catch (NamingException ex) {
                     Logger.getLogger(ScrapServlet.class.getName()).log(Level.SEVERE, null, ex);

@@ -17,16 +17,10 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import sample.jaxb.Painting;
 import sample.utils.HTMLPreprocessor;
-import sample.utils.XMLUtils;
 import sample.domparser.MyParser;
 
 /**
@@ -50,23 +44,22 @@ public class TranhDepCom implements MyParser {
             "http://www.tranh-dep.com/tranh-tranh-tri-noi-that.html",
             "http://www.tranh-dep.com/tranh-trang-tri-phong-ngu",
             "http://www.tranh-dep.com/tranh-trang-tri-phong-khach-dep",
-//            "http://www.tranh-dep.com/tranh-trang-tri-phong-an",
-//            "http://www.tranh-dep.com/tranh-tang-tan-gia",
-//            "http://www.tranh-dep.com/tranh-dong-ho-hoa-qua.html",
-//            "http://www.tranh-dep.com/tranh-dong-ho-phong-canh.html",
-//            "http://www.tranh-dep.com/tranh-dong-ho-dong-vat-con-trung.html",
-//            "http://www.tranh-dep.com/tranh-dong-ho-hoat-hinh.html",
-//            "http://www.tranh-dep.com/tranh-dong-ho-trang-tri.html",
-//            "http://www.tranh-dep.com/tranh-dong-ho-de-ban.html",
-//            "http://www.tranh-dep.com/tranh-hoa-si-noi-tieng.html",
-//            "http://www.tranh-dep.com/tranh-hoa-treo-tuong",
-//            "http://www.tranh-dep.com/tranh-phong-canh-treo-tuong",
-//            "http://www.tranh-dep.com/tranh-treo-tuong-phong-thuy",
-//            "http://www.tranh-dep.com/tranh-treo-tuong-vintage",
-//            "http://www.tranh-dep.com/tranh-bo-hien-dai"
+            "http://www.tranh-dep.com/tranh-trang-tri-phong-an",
+            "http://www.tranh-dep.com/tranh-tang-tan-gia",
+            "http://www.tranh-dep.com/tranh-dong-ho-hoa-qua.html",
+            "http://www.tranh-dep.com/tranh-dong-ho-phong-canh.html",
+            "http://www.tranh-dep.com/tranh-dong-ho-dong-vat-con-trung.html",
+            "http://www.tranh-dep.com/tranh-dong-ho-hoat-hinh.html",
+            "http://www.tranh-dep.com/tranh-dong-ho-trang-tri.html",
+            "http://www.tranh-dep.com/tranh-dong-ho-de-ban.html",
+            "http://www.tranh-dep.com/tranh-hoa-si-noi-tieng.html",
+            "http://www.tranh-dep.com/tranh-hoa-treo-tuong",
+            "http://www.tranh-dep.com/tranh-phong-canh-treo-tuong",
+            "http://www.tranh-dep.com/tranh-treo-tuong-phong-thuy",
+            "http://www.tranh-dep.com/tranh-treo-tuong-vintage",
+            "http://www.tranh-dep.com/tranh-bo-hien-dai"
                 
-                
-//            "http://www.tranh-dep.com/tranh-trang-tri-quan-cafe",
+//            "http://www.tranh-dep.com/tranh-trang-tri-quan-cafe", // trang nay html khac biet
         };
 
         System.out.println("get HTML...");
@@ -180,6 +173,7 @@ public class TranhDepCom implements MyParser {
                         String sPrice = reader.getText().trim();
                         sPrice = sPrice.replace(".", "");
                         sPrice = sPrice.replace("đ", "");
+                        sPrice = sPrice.trim();
                         BigInteger price = new BigInteger("-1");
                         try {
                             price = new BigInteger(sPrice);
