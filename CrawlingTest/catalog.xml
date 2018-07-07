@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/E:/DaiHoc/2018-Summer/PRX/ASM/MuaTranhODau/CrawlingTest/src/sample/schema/painting.xsd" uri="xml-resources/jaxb/PaintingList/painting.xsd"/>
+</catalog>

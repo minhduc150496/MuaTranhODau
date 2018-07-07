@@ -5,7 +5,13 @@
  */
 package sample.utils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +26,19 @@ public class HTMLPreprocessor implements Serializable {
 
     private static final String EMPTY_ELEMENTS = "<area> <base> <br> <col> <hr> <img> <input> <link> <meta> <param> <command> <keygen> <source>"; // HTML 5 
 
+    public static String getHTMLFromURL(String sUrl) throws MalformedURLException, IOException {        
+        URL pageURL = new URL(sUrl);
+        InputStream is = pageURL.openStream();
+        InputStreamReader reader = new InputStreamReader(is, "UTF-8"); // XIN ĐỪNG QUÊN!!!
+        BufferedReader br = new BufferedReader(reader);
+        String result = "";
+        String line;
+        while((line = br.readLine())!=null) {
+            result += line;
+        }
+        return result;
+    }
+    
     public static String wellForm(String raw) {
         System.out.println("WELL-FORMING BEGIN...");
 

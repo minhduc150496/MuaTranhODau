@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://xml.netbeans.net/schema/paintings"
+           xmlns="http://xml.netbeans.net/schema/paintings"
+           elementFormDefault="qualified">
+    <xs:element name="paintings">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="painting" type="painting" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="painting">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="code" type="xs:string"/>
+            <xs:element name="pageURL" type="xs:string"/>
+            <xs:element name="price" type="xs:nonNegativeInteger"/>
+            <xs:element name="imageURL" type="xs:string"/>
+            <xs:element name="description" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
