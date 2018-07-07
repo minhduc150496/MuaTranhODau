@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="pageURL" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="price" type="{http://www.w3.org/2001/XMLSchema}nonNegativeInteger"/>
  *         &lt;element name="imageURL" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="keywords" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -49,7 +49,7 @@ import javax.xml.bind.annotation.XmlType;
     "pageURL",
     "price",
     "imageURL",
-    "description"
+    "keywords"
 })
 public class Painting implements Serializable{
 
@@ -65,18 +65,18 @@ public class Painting implements Serializable{
     @XmlElement(required = true)
     protected String imageURL;
     @XmlElement(required = true)
-    protected String description;
+    protected String keywords;
 
     public Painting() {
     }
 
-    public Painting(String name, String code, String pageURL, BigInteger price, String imageURL, String description) {
+    public Painting(String name, String code, String pageURL, BigInteger price, String imageURL, String keywords) {
         this.name = name;
         this.code = code;
         this.pageURL = pageURL;
         this.price = price;
         this.imageURL = imageURL;
-        this.description = description;
+        this.keywords = keywords;
     }
     
     /**
@@ -200,27 +200,27 @@ public class Painting implements Serializable{
     }
 
     /**
-     * Gets the value of the description property.
+     * Gets the value of the keywords property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getDescription() {
-        return description;
+    public String getKeywords() {
+        return keywords;
     }
 
     /**
-     * Sets the value of the description property.
+     * Sets the value of the keywords property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setDescription(String value) {
-        this.description = value;
+    public void setKeywords(String value) {
+        this.keywords = value;
     }
 
 }

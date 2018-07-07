@@ -16,6 +16,7 @@ import sample.domparser.TuongXinhComVn;
 import sample.domparser.MyParser;
 import sample.domparser.TranhTreoTuongVn;
 import sample.staxparser.TranhDepCom;
+import sample.utils.StringUtils;
 
 /**
  *
@@ -40,7 +41,7 @@ public class ScrapServlet {
         if (list != null) {
             for (Painting p : list) {
                 try {
-                    dao.insert(p.getName(), p.getCode(), p.getPageURL(), p.getPrice(), p.getImageURL(), "keywords coming soon");
+                    dao.insert(p.getName(), p.getCode(), p.getPageURL(), p.getPrice(), p.getImageURL(), p.getKeywords());
                     nSuccess++;
                 } catch (SQLException ex) {
                     Logger.getLogger(ScrapServlet.class.getName()).log(Level.SEVERE, null, ex);

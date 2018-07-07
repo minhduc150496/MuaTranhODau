@@ -21,6 +21,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import sample.jaxb.Painting;
 import sample.utils.HTMLPreprocessor;
+import sample.utils.StringUtils;
 import sample.utils.XMLUtils;
 
 /**
@@ -123,9 +124,9 @@ public class TranhTreoTuongVn implements MyParser {
                     price = new BigInteger(sPrice);
                 } catch (NumberFormatException ex) {
                     Logger.getLogger(TranhTreoTuongVn.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                Painting p = new Painting(name, code, pageURL, price, imageURL, "");
+                }                
+                String keywords = StringUtils.toRawString(name);
+                Painting p = new Painting(name, code, pageURL, price, imageURL, keywords);
 
                 if (results == null) {
                     results = new ArrayList<>();

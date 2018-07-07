@@ -22,6 +22,7 @@ import org.xml.sax.SAXException;
 import sample.jaxb.Painting;
 import sample.utils.HTMLPreprocessor;
 import sample.domparser.MyParser;
+import sample.utils.StringUtils;
 
 /**
  *
@@ -150,6 +151,8 @@ public class TranhDepCom implements MyParser {
                         if (results == null) {
                             results = new ArrayList<>();
                         }
+                        String keywords = StringUtils.toRawString(newPainting.getName());
+                        newPainting.setKeywords(keywords);
                         results.add(newPainting);
                         newPainting = new Painting();
                     } else if (sClass.contains("product-name")) {
