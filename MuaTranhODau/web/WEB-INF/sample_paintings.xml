@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<paintings>
+    <painting>
+        <name>Tranh treo tường phòng ăn M01</name>
+        <code>TX-M01</code>
+        <pageURL>http://www.tranh-dep.com/tranh-m01</pageURL>
+        <price>1200000</price>
+        <imageURL>http://www.tranh-dep.com/tranh-m01.jpg</imageURL>
+        <keywords>tranh treo tuong phong an m01</keywords>
+    </painting>
+    <painting>
+        <name>Tranh đồng hồ phòng ngủ</name>
+        <code>TX-M02</code>
+        <pageURL>http://www.tranh-dep.com/tranh-m02</pageURL>
+        <price>2500000</price>
+        <imageURL>http://www.tranh-dep.com/tranh-m02.jpg</imageURL>
+        <keywords>tranh treo tuong phong an m01</keywords>
+    </painting>
+    <painting>
+        <name>Tranh phù điêu phòng khách</name>
+        <code>TX-M03</code>
+        <pageURL>http://www.tranh-dep.com/tranh-m03</pageURL>
+        <price>120000</price>
+        <imageURL>http://www.tranh-dep.com/tranh-m03.jpg</imageURL>
+        <keywords>tranh treo tuong phong an m01</keywords>
+    </painting>
+</paintings>

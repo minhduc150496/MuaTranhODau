@@ -114,7 +114,7 @@ public class TranhTreoTuongVn implements MyParser {
                 String imageURL = (String) xpath.evaluate(exp, node, XPathConstants.STRING);
                 imageURL = "http://tranhtreotuong.vn" + imageURL.trim();
 
-                exp = ".//span[@class='price']/text()";
+                exp = ".//p[@class='special-price']/span[@class='price']/text()";
                 String sPrice = (String) xpath.evaluate(exp, node, XPathConstants.STRING);
                 sPrice = sPrice.replace(".", "");
                 sPrice = sPrice.replace("đ", "");

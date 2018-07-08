@@ -40,8 +40,7 @@ public class ViewServlet {
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             StreamResult streamResult = new StreamResult("./src/java/sample/fakeservlet/results.xml");
             m.marshal(paintingList, streamResult);
-            
-            
+                        
         } catch (JAXBException ex) {
             Logger.getLogger(ViewServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {

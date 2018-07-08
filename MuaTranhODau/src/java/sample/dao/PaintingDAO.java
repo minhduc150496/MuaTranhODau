@@ -21,6 +21,41 @@ import sample.utils.DBUtils;
  * @author Chuot Bach
  */
 public class PaintingDAO implements Serializable {
+    
+    public Paintings searchByKeywords(String searchValue) throws ClassNotFoundException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        Paintings results = null;
+        try {
+            con = DBUtils.getConnection();
+            String sql = " select * from Painting where keywords like '%?%'";
+            stm = con.prepareStatement(sql);
+            stm.setString(1, searchValue);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String code = rs.getString("code");
+                String pageURL = rs.getString("pageURL");
+                String sPrice = rs.getString("price");
+                BigInteger price = new BigInteger(sPrice);
+                String imageURL = rs.getString("imageURL");
+                String keywords = rs.getString("keywords");
+                if (results==null) {
+                    results = new Paintings();
+                }
+                Painting p = new Painting(name, code, pageURL, price, imageURL, keywords);
+                results.getPainting().add(p);
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return results;
+    }
 
     public Paintings loadAll() throws ClassNotFoundException, SQLException {
         Connection con = null;
@@ -34,7 +69,6 @@ public class PaintingDAO implements Serializable {
             while (rs.next()) {
                 String name = rs.getString("name");
                 String code = rs.getString("code");
-                code = code.trim();
                 String pageURL = rs.getString("pageURL");
                 String sPrice = rs.getString("price");
                 BigInteger price = new BigInteger(sPrice);
