@@ -1,4 +1,6 @@
-use MuaTranhODau
+use TranhDayRoi
 
+--delete from Painting
+select count(*) from Painting 
 
-select ([name]) from Painting where name like '%tr%'
+select (price) from Painting

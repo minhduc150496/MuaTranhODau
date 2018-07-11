@@ -34,12 +34,33 @@
         <div class="container">
             <c:set var="xml" value="${requestScope.XML_RESULTS}"/>
             <br><br>
-            <font id="totalResults" color="green" style="display: none">Tìm thấy 25 kết quả.</font>
+            <div class="pull-left">
+                <font id="totalResults" color="green" style="display: none">Tìm thấy 25 kết quả.</font>
+            </div>            
+            <div id="advanceSearch" class="pull-right" style="display: none">
+                Giá trong khoảng:
+                <select name="priceRange" onchange="handleRangeChange()">
+                    <option value="-1" selected>Tất cả</option>
+                    <option value="0">Dưới 500.000đ</option>
+                    <option value="1">500.000đ - 1.000.000đ</option>
+                    <option value="2">1.000.000đ - 2.000.000đ</option>
+                    <option value="3">2.000.000đ - 3.000.000đ</option>
+                    <option value="4">3.000.000đ - 4.000.000đ</option>
+                    <option value="5">Trên 4.000.000đ</option>
+                </select>
+                <label onclick="handleSortChange()">
+                    <input type="radio" name="rdSort" value="Inc" checked=""/> Giá tăng dần 
+                </label>
+                <label onclick="handleSortChange()">
+                    <input type="radio" name="rdSort" value="Dec"/> Giá giảm dần
+                </label>
+            </div>
+            <div class="clearfix"></div>
             <font id="noResults" color="red" style="display: none">Hỏi khó quá ông nội!</font>
             <div class="row grid" id="gridResults" style="display: none">
             </div>
         </div>
-           
+
         <script src="utils.js" type="text/javascript"></script>
         <script src="scripts.js" type="text/javascript"></script>
     </body>

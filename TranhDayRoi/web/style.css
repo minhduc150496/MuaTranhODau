@@ -51,3 +51,9 @@ header .search-box input {
 .grid {
     margin-top: 15px;
 }
+label {
+    font-weight: normal;
+}
+label input[type="radio"] {
+    margin-left: 5px;
+}
