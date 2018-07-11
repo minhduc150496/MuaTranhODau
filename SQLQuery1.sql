@@ -1,5 +1,4 @@
 use MuaTranhODau
 
-delete from Painting
 
-select * from Painting where keywords like '%trang tri%'
+select ([name]) from Painting where name like '%tr%'

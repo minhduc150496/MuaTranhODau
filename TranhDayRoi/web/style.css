@@ -1,0 +1,53 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jul 12, 2018, 12:21:59 AM
+    Author     : MinhDuc
+*/
+
+
+.painting .name {
+    display: block;
+    font-weight: bold;
+    margin-top: 5px;
+}
+.painting .code {
+    color: gray;
+}
+.painting .price {
+    font-weight: bold;
+    color: red;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+button {
+    background: #0066cc;
+    border: none;
+    color: white;    
+}
+button:hover {
+    text-decoration: underline;
+}
+header {
+    background: #0066cc;
+    padding-top: 7px;
+    padding-bottom: 5px;    
+}
+header .logo {
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+}
+header .search-box {
+    margin-left: 15px;
+}
+header .search-box input {
+    width: 500px;
+    padding: 0 5px;
+}
+.grid {
+    margin-top: 15px;
+}
