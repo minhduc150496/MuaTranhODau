@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paintings>
+    <painting>
+        <name>Tranh Scandinavia chú chim nhỏ</name>
+        <code>SCA168</code>
+        <pageURL>https://tuongxinh.com.vn/tranh-treo-tuong-scandinavia-chu-chim-nho-sca168/</pageURL>
+        <price>550000</price>
+        <imageURL>https://tuongxinh.com.vn/wp-content/uploads/2018/03/sca168-300x219.jpg</imageURL>
+        <keywords>tranh scandinavia chu chim nho</keywords>
+    </painting>
+    <painting>
+        <name>Tranh chim công l?a hoa vàng</name>
+        <code>TTT-315</code>
+        <pageURL>http://tranhtreotuong.vn/tranh-trang-tri/tranh-chim-cong-loa-hoa-vang.html</pageURL>
+        <price>1100000</price>
+        <imageURL>http://tranhtreotuong.vn/images/images_product/images_1509162211.jpg</imageURL>
+        <keywords>tranh chim cong loa hoa vang</keywords>
+    </painting>
+</paintings>

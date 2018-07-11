@@ -28,13 +28,14 @@ public class PaintingDAO implements Serializable {
         Paintings results = null;
         try {
             con = DBUtils.getConnection();
-            String sql = " select * from Painting where keywords like '%?%'";
+            String sql = " select * from Painting where keywords like '%?%' or code like '%?%'";
             stm = con.prepareStatement(sql);
             stm.setString(1, searchValue);
+            stm.setString(2, searchValue);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 String name = rs.getString("name");
-                String code = rs.getString("code");
+                String code = rs.getString("code").trim();
                 String pageURL = rs.getString("pageURL");
                 String sPrice = rs.getString("price");
                 BigInteger price = new BigInteger(sPrice);
@@ -68,7 +69,7 @@ public class PaintingDAO implements Serializable {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 String name = rs.getString("name");
-                String code = rs.getString("code");
+                String code = rs.getString("code").trim();
                 String pageURL = rs.getString("pageURL");
                 String sPrice = rs.getString("price");
                 BigInteger price = new BigInteger(sPrice);
@@ -91,6 +92,37 @@ public class PaintingDAO implements Serializable {
         return results;
     }
 
+    public Painting getByCode(String inputCode) throws ClassNotFoundException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        Painting result = null;
+        try {
+            con = DBUtils.getConnection();
+            String sql = "select * from Painting where code = ?";
+            stm = con.prepareStatement(sql);
+            stm.setString(1, inputCode);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                String name = rs.getString("name"); System.out.println("db:"+name);
+                String code = rs.getString("code").trim();
+                String pageURL = rs.getString("pageURL");
+                String sPrice = rs.getString("price");
+                BigInteger price = new BigInteger(sPrice);
+                String imageURL = rs.getString("imageURL");
+                String keywords = rs.getString("keywords");
+                result = new Painting(name, code, pageURL, price, imageURL, keywords);
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return result;
+    }
+    
     public boolean insert(String name, String code, String pageURL, BigInteger price, String imageURL, String keywords)
             throws SQLException, NamingException, ClassNotFoundException {
         Connection con = null;

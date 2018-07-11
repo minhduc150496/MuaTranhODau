@@ -19,9 +19,14 @@ public class DBUtils implements Serializable {
         // 1. Load driver
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         // 2. Create connection string
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=MuaTranhODau;instanceName=DUCBMSE61791";
+        String url = "jdbc:sqlserver://localhost:1433;"
+                + "databaseName=MuaTranhODau;"
+                + "instanceName=DUCBMSE61791;"
+                + "user=sa;password=123456;"
+                + "useUnicode=true;"
+                + "characterEncoding=UTF-8";
         // 3. Open connection
-        Connection con = DriverManager.getConnection(url,"sa","123456");
+        Connection con = DriverManager.getConnection(url);
         return con;
     }
 }

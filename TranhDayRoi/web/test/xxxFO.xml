@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+    <fo:layout-master-set>
+        <fo:simple-page-master margin-left="1in" margin-right="1in" margin-bottom="36pt" margin-top="0.5in" page-height="11in" page-width="8.5in" master-name="x">
+            <fo:region-body margin-top="0.5in"/>
+            <fo:region-before extent="1in"/>
+            <fo:region-after extent=".75in"/>
+        </fo:simple-page-master>
+    </fo:layout-master-set>
+    <fo:page-sequence master-reference="x">
+        <fo:static-content flow-name="xsl-region-before">
+            <fo:block padding-top="3pt" text-align="center" space-after.optimum="15pt" background-color="cyan" line-height="24pt" font-family="sans-serif" font-size="14pt">
+                FO Demo - DucBM
+            </fo:block>
+        </fo:static-content>
+        <fo:static-content flow-name="xsl-region-after">
+            <fo:block padding-top="3pt" text-align="center" space-after.optimum="15pt" line-height="24pt" font-family="sans-serif" font-size="18pt">
+                After block
+            </fo:block>
+        </fo:static-content>
+        <fo:flow flow-name="xsl-region-body">
+            <fo:block>
+                <fo:table table-layout="fixed" border-collapse="separate">
+                    <fo:table-column column-width="5cm"/>
+                    <fo:table-column column-width="5cm"/>
+                    <fo:table-column column-width="5cm"/>
+                    <fo:table-column column-width="5cm"/>
+                    <fo:table-body>
+                        <fo:table-row>
+                            <fo:table-cell border-style="solid" border-width="0.5pt" border-color="blue">
+                                <fo:block text-align="center">Code</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell border-style="solid" border-width="0.5pt" border-color="blue">
+                                <fo:block text-align="center">Name</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell border-style="solid" border-width="0.5pt" border-color="blue">
+                                <fo:block text-align="center">Image</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell border-style="solid" border-width="0.5pt" border-color="blue">
+                                <fo:block text-align="center">Price</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell border-style="solid" border-width="0.5pt" border-color="blue">
+                                <fo:block text-align="center">SCA168</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell border-style="solid" border-width="0.5pt" border-color="blue">
+                                <fo:block text-align="center">Tranh Scandinavia chú chim nhỏ</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell border-style="solid" border-width="0.5pt" border-color="blue">
+                                <fo:block text-align="center">https://tuongxinh.com.vn/wp-content/uploads/2018/03/sca168-300x219.jpg</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell border-style="solid" border-width="0.5pt" border-color="blue">
+                                <fo:block text-align="center">550000</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                        <fo:table-row>
+                            <fo:table-cell border-style="solid" border-width="0.5pt" border-color="blue">
+                                <fo:block text-align="center">TTT-315</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell border-style="solid" border-width="0.5pt" border-color="blue">
+                                <fo:block text-align="center">Tranh chim công lọa hoa vàng</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell border-style="solid" border-width="0.5pt" border-color="blue">
+                                <fo:block text-align="center">http://tranhtreotuong.vn/images/images_product/images_1509162211.jpg</fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell border-style="solid" border-width="0.5pt" border-color="blue">
+                                <fo:block text-align="center">1100000</fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </fo:table-body>
+                </fo:table>
+            </fo:block>
+        </fo:flow>
+    </fo:page-sequence>
+</fo:root>

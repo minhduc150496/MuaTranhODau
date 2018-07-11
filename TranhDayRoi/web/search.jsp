@@ -13,11 +13,35 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <title>JSP Page</title>
+        <style>
+            .painting .name {
+                display: block;
+                font-weight: bold;
+                margin-top: 5px;
+            }
+            .painting .code {
+                color: gray;
+            }
+            .painting .price {
+                font-weight: bold;
+                color: red;
+                margin-bottom: 15px;
+                font-size: 16px;
+            }
+        </style>
     </head>
     <body onload="handleOnLoad()">
         <div class="container">
-            <input id="inputSearch" type="text" onkeypress="handleKeyPress(event)"/>
-            <button class="btn btn-info" type="button" onclick="search()">Tìm</button>
+            <div class="pull-left">
+                <input id="inputSearch" type="text" placeholder="Tên SP/ mã SP" onkeypress="handleKeyPress(event)"/>
+            <button class="btn btn-info" type="button" onclick="search()">Tìm</button>            
+            </div>
+            <div class="pull-right">
+                <form action="CenterServlet">
+                    <input id="pdfInput" type="hidden" name="pdfInput" value=""/>
+                    <button name="btAction" value="PrintPDF">Print PDF</button>
+                </form>
+            </div>
             <c:set var="xml" value="${requestScope.XML_RESULTS}"/>
             <br><br>
             <div class="row" id="gridResults" style="display: none">
@@ -31,8 +55,15 @@
             let gridResults = document.getElementById("gridResults");
             let textNoResults = document.getElementById("noResults");
             var hasResult = false;
-            var resultCounter = 0;
-
+            var resultCounter = 0;            
+            var resultCodes = []; 
+            let pdfInput = document.getElementById("pdfInput");
+            
+            
+            function updatePDFInput() {
+                pdfInput.value = resultCodes.toString();
+            }
+            
             function updateTableDisplay() {
                 if (hasResult) {
                     gridResults.style.display = "block";
@@ -47,6 +78,7 @@
                 gridResults.innerHTML = "";
                 searchNode(xml, searchValue);
                 updateTableDisplay();
+                updatePDFInput();
             }
 
             function handleKeyPress(e) {
@@ -57,15 +89,16 @@
             }
 
             function addResultItem(name, code, pageURL, price, imageURL) {
+                resultCodes.push(code);
                 price = parseInt(price);
                 price = price.toLocaleString("vn-VI");
-                var tmp = '<div class="col-md-3">'
+                var tmp = '<div class="col-md-3 painting">'
                     +'<a href="'+pageURL+'">'
                     +'<img class="img-responsive" src="'+imageURL+'"/>'
                     +'</a>'
-                    +'<a class="text-info" href="'+pageURL+'">'+name+'</a>'
-                    +'<div class="text-danger">'+price+' đ</div>'
-                    +'<div>'+code+'</div>'
+                    +'<a class="name" href="'+pageURL+'">'+name+'</a>'
+                    +'<div class="code">'+code+'</div>'
+                    +'<div class="price">'+price+' đ</div>'
                     +'</div>';
                 gridResults.innerHTML += tmp;
                 resultCounter++;
@@ -82,23 +115,27 @@
                 gridResults.innerHTML = "";
                 hasResult = false;
                 resultCounter = 0;
+                resultCodes = [];
                 searchNode(xml, strSearch);
                 updateTableDisplay();
+                updatePDFInput();
             }
             function searchNode(node, strSearch) {
                 if (node == null) {
                     return;
                 }
                 if (node.tagName == "painting") {
+                    var code = node.childNodes[1].firstChild.nodeValue;
+                    code = code.toLowerCase();
                     var keywords = node.lastChild.firstChild.nodeValue;
-                    if (keywords.indexOf(strSearch, 0) > -1) {
+                    if (keywords.indexOf(strSearch, 0) > -1 || code.indexOf(strSearch, 0) > -1) {
                         hasResult = true;
                         var childs = node.childNodes;
-                        var name = childs[0].firstChild.nodeValue;
-                        var code = childs[1].firstChild.nodeValue;
-                        var pageURL = childs[2].firstChild.nodeValue;
-                        var price = childs[3].firstChild.nodeValue;
-                        var imageURL = childs[4].firstChild.nodeValue;
+                        var name = childs[0].firstChild.nodeValue.trim();
+                        var code = childs[1].firstChild.nodeValue.trim();
+                        var pageURL = childs[2].firstChild.nodeValue.trim();
+                        var price = childs[3].firstChild.nodeValue.trim();
+                        var imageURL = childs[4].firstChild.nodeValue.trim();
                         addResultItem(name, code, pageURL, price, imageURL);
                     }
                 }

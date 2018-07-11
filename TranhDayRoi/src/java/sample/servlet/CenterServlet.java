@@ -22,6 +22,7 @@ public class CenterServlet extends HttpServlet {
     private final String loginPage = "login.html";
     private final String searchPage = "search.html";
     private final String searchServlet = "SearchServlet";
+    private final String printPDFServlet = "PrintPDFServlet";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,8 +35,8 @@ public class CenterServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+//        response.setContentType("text/html;charset=UTF-8");
+//        PrintWriter out = response.getWriter();
         
         String button = request.getParameter("btAction");
         String url = loginPage;
@@ -45,11 +46,13 @@ public class CenterServlet extends HttpServlet {
             }
             if (button.equals("Search")) {
                 url = searchServlet;
+            } else if (button.equals("PrintPDF")) {
+                url = printPDFServlet;
             }
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
-            out.close();
+//            out.close();
         }
     }
 
